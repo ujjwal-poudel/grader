@@ -11,6 +11,7 @@ export default function PersistenceForm({ onResult, setLoading }) {
   const [formData, setFormData] = useState({
     model: 'logistic',
     gpa: '',
+    prediction: 'persistence',
     firstLanguage: '',
     funding: '',
     fastTrack: '',
@@ -71,7 +72,7 @@ export default function PersistenceForm({ onResult, setLoading }) {
   const prevStep = () => setStep((prev) => prev - 1);
 
   const handleSubmit = async () => {
-    onResult(null); // clear previous result immediately
+    onResult(null); // Clear previous result immediately
     setLoading(true);
   
     // Validate all steps
@@ -80,6 +81,7 @@ export default function PersistenceForm({ onResult, setLoading }) {
       ...validateStep(1),
       ...validateStep(2),
     };
+  
     if (Object.keys(allErrors).length > 0) {
       setErrors(allErrors);
       setLoading(false); // stop spinner if errors
@@ -87,7 +89,7 @@ export default function PersistenceForm({ onResult, setLoading }) {
     }
   
     try {
-      // Scroll down a bit later
+      // Scroll to result section after a slight delay
       setTimeout(() => {
         document.getElementById('prediction-result')?.scrollIntoView({
           behavior: 'smooth',
@@ -95,33 +97,55 @@ export default function PersistenceForm({ onResult, setLoading }) {
         });
       }, 100);
   
-      const response = await fetch('https://api.jsonbin.io/v3/qs/67fa28818a456b796687bdb6', {
-        method: 'GET',
+      // Create final JSON structure for submission
+      const submissionData = {
+        model: formData.model,
+        gpa: formData.gpa,
+        firstLanguage: formData.firstLanguage,
+        funding: formData.funding,
+        fastTrack: formData.fastTrack,
+        coop: formData.coop,
+        residency: formData.residency,
+        gender: formData.gender,
+        prevEducation: formData.prevEducation,
+        ageGroup: formData.ageGroup,
+        hsAverage: formData.hsAverage,
+        mathScore: formData.mathScore,
+        englishGrade: formData.englishGrade,
+        prediction: formData.prediction, // 👈 Toggle field
+      };
+  
+      // Show JSON structure to be sent
+      console.log("JSON to POST:", JSON.stringify(submissionData, null, 2));
+  
+      // POST request (commented out for now, remove /* */ to activate)
+      /*
+      const response = await fetch('https://api.jsonbin.io/v3/b', {
+        method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
+        body: JSON.stringify(submissionData),
       });
   
       const json = await response.json();
-      console.log("✅ Full Response JSON:", JSON.stringify(json, null, 2));
-  
-      // 💤 Artificial delay (6 seconds)
-      await new Promise((resolve) => setTimeout(resolve, 6000));
+      console.log("✅ Response from POST:", JSON.stringify(json, null, 2));
   
       if (onResult) {
-        onResult(json.record);     // Show new result
-        setFormKey(Date.now());    // Reset form
+        onResult(json.record || json); // depends on API shape
       }
+      */
+  
+      // Reset form
+      setFormKey(Date.now());
     } catch (err) {
-      console.error("Error fetching prediction:", err);
+      console.error("Error posting prediction:", err);
     } finally {
       setLoading(false);
     }
   };
   
   
-
-
   const transition = { duration: 0.3, ease: 'easeInOut' };
 
   const steps = [
