@@ -29,7 +29,7 @@ export default function PredictionTabs({ onResult, setLoading, setResult }) {
               First Year Persistence
             </button>
           </li>
-          <li className="me-2">
+          {/* <li className="me-2">
             <button
               onClick={() => setActiveTab('gpa')}
               className={`inline-block p-4 border-b-2 rounded-t-lg ${
@@ -40,7 +40,7 @@ export default function PredictionTabs({ onResult, setLoading, setResult }) {
             >
               Second Term GPA
             </button>
-          </li>
+          </li> */}
         </ul>
       </div>
 
