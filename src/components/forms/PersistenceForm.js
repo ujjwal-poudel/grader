@@ -99,7 +99,7 @@ export default function PersistenceForm({ onResult, setLoading }) {
       }, 100);
   
       // Create final JSON structure for submission
-      const submissionData = {
+      const rawSubmissionData = {
         model: formData.model,
         prediction: formData.prediction,
         First_Term_Gpa: parseFloat(formData.gpa),
@@ -116,13 +116,24 @@ export default function PersistenceForm({ onResult, setLoading }) {
         English_Grade: parseInt(formData.englishGrade)
       };
       
-  
       // Show JSON structure to be sent
-      console.log("JSON to POST:", JSON.stringify(submissionData, null, 2));
+      // console.log("JSON to POST:", JSON.stringify(submissionData, null, 2));
 
-      const stringifiedData = Object.fromEntries(
-        Object.entries(submissionData).map(([key, value]) => [key, String(value)])
+      function toCamelCase(str) {
+        return str
+          .replace(/[_\s]+(.)?/g, (_, c) => c ? c.toUpperCase() : '')
+          .replace(/^(.)/, (c) => c.toLowerCase());
+      }
+      
+      const camelSubmissionData = Object.fromEntries(
+        Object.entries(rawSubmissionData).map(([key, value]) => [
+          toCamelCase(key),
+          String(value)
+        ])
       );
+      
+      
+      
   
       // POST request (commented out for now, remove /* */ to activate)
       const response = await fetch('https://api.jsonbin.io/v3/qs/68016c5a8561e97a5001f70c', {
@@ -131,8 +142,11 @@ export default function PersistenceForm({ onResult, setLoading }) {
           'Content-Type': 'application/json'
         },
         
-        body: JSON.stringify(stringifiedData),
+        body: JSON.stringify(camelSubmissionData),
       });
+
+      // print the request
+      console.log("Request to POST:", camelSubmissionData);
   
       const json = await response.json();
       console.log("Response from POST:", JSON.stringify(json, null, 2));
