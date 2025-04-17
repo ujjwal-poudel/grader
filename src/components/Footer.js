@@ -50,7 +50,7 @@ export default function Footer() {
 
         <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
         <div className="text-center text-sm text-gray-500 dark:text-gray-400">
-          © {new Date().getFullYear()} YourAppName. All rights reserved.
+          © {new Date().getFullYear()} Grader. All rights reserved.
         </div>
       </div>
     </footer>
