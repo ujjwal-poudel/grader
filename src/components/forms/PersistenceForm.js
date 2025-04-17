@@ -119,6 +119,10 @@ export default function PersistenceForm({ onResult, setLoading }) {
   
       // Show JSON structure to be sent
       console.log("JSON to POST:", JSON.stringify(submissionData, null, 2));
+
+      const stringifiedData = Object.fromEntries(
+        Object.entries(submissionData).map(([key, value]) => [key, String(value)])
+      );
   
       // POST request (commented out for now, remove /* */ to activate)
       const response = await fetch('https://api.jsonbin.io/v3/qs/68016c5a8561e97a5001f70c', {
@@ -126,7 +130,8 @@ export default function PersistenceForm({ onResult, setLoading }) {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(submissionData),
+        
+        body: JSON.stringify(stringifiedData),
       });
   
       const json = await response.json();
