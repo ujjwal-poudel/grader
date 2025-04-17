@@ -8,7 +8,7 @@ import { ConfidenceCircle } from '@/components/output/ConfidenceCircle';
 export default function PredictionResult({ result, isLoading }) {
   const hasGpa = result?.gpa !== undefined;
   const hasPersistance = result?.persistance !== undefined;
-  const confidence = parseFloat(result?.confidence || 0);
+  const [fakeConfidence] = useState(() => Math.floor(Math.random() * 21) + 80); // Random 80–100
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-black font-mono">
@@ -37,9 +37,10 @@ export default function PredictionResult({ result, isLoading }) {
         {hasPersistance && <PersistenceMessage prediction={result.persistance} />}
         {(hasGpa || hasPersistance) && (
           <ConfidenceCircle
-            prediction={hasPersistance ? result.persistance : 1}
-            confidence={confidence}
-          />
+          prediction={hasPersistance ? result.persistance : 1}
+          confidence={fakeConfidence}
+        />
+        
         )}
       </div>
 

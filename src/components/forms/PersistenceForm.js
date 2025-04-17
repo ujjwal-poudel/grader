@@ -22,7 +22,8 @@ export default function PersistenceForm({ onResult, setLoading }) {
     ageGroup: '',
     hsAverage: '',
     mathScore: '',
-    englishGrade: ''
+    englishGrade: '',
+    secondTermGpa: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -100,27 +101,27 @@ export default function PersistenceForm({ onResult, setLoading }) {
       // Create final JSON structure for submission
       const submissionData = {
         model: formData.model,
-        gpa: formData.gpa,
-        firstLanguage: formData.firstLanguage,
-        funding: formData.funding,
-        fastTrack: formData.fastTrack,
-        coop: formData.coop,
-        residency: formData.residency,
-        gender: formData.gender,
-        prevEducation: formData.prevEducation,
-        ageGroup: formData.ageGroup,
-        hsAverage: formData.hsAverage,
-        mathScore: formData.mathScore,
-        englishGrade: formData.englishGrade,
-        prediction: formData.prediction, // 👈 Toggle field
+        prediction: formData.prediction,
+        First_Term_Gpa: parseFloat(formData.gpa),
+        ...(formData.secondTermGpa && { Second_Term_Gpa: parseFloat(formData.secondTermGpa) }),
+        First_Language: parseInt(formData.firstLanguage),
+        Funding: parseInt(formData.funding),
+        FastTrack: parseInt(formData.fastTrack),
+        Coop: parseInt(formData.coop),
+        Residency: parseInt(formData.residency),
+        Gender: parseInt(formData.gender),
+        Previous_Education: parseInt(formData.prevEducation),
+        Age_Group: parseInt(formData.ageGroup),
+        Math_Score: parseFloat(formData.mathScore),
+        English_Grade: parseInt(formData.englishGrade)
       };
+      
   
       // Show JSON structure to be sent
       console.log("JSON to POST:", JSON.stringify(submissionData, null, 2));
   
       // POST request (commented out for now, remove /* */ to activate)
-      /*
-      const response = await fetch('https://api.jsonbin.io/v3/b', {
+      const response = await fetch('https://api.jsonbin.io/v3/qs/68016c5a8561e97a5001f70c', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -129,12 +130,11 @@ export default function PersistenceForm({ onResult, setLoading }) {
       });
   
       const json = await response.json();
-      console.log("✅ Response from POST:", JSON.stringify(json, null, 2));
+      console.log("Response from POST:", JSON.stringify(json, null, 2));
   
       if (onResult) {
         onResult(json.record || json); // depends on API shape
       }
-      */
   
       // Reset form
       setFormKey(Date.now());
