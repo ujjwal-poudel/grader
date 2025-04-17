@@ -86,7 +86,7 @@ export default function StepModelGpa({ formData, handleChange, errors }) {
         )}
       </div>
 
-      {/* Second Term GPA (only for persistence) */}
+      {/* Second Term GPA (only for persistence)
       {formData.prediction === 'persistence' && (
   <div className="space-y-2 w-full sm:w-48">
     <label className="block text-sm sm:text-base font-medium text-gray-700 dark:text-gray-200">
@@ -104,7 +104,7 @@ export default function StepModelGpa({ formData, handleChange, errors }) {
       className="w-full px-3 py-2 text-sm sm:text-base border rounded"
     />
   </div>
-)}
+)} */}
 
 
       {/* Data Safety Note */}
